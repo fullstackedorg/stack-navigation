@@ -1,0 +1,54 @@
+html, body {
+    font-family: sans-serif;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+    #grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    #grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+#grid > div {
+    aspect-ratio: 1/1
+}
+
+.color-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.back-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+    width: 50px;
+}
+
+.back-btn::after {
+    content: "";
+    border: solid currentcolor;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    margin-top: 20px;
+    margin-left: 20px;
+}

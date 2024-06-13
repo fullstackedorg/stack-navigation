@@ -1,2 +1,3 @@
-# stack-navigation
+# Stack Navigation
 Stack Navigation for FullStacked Apps
+
