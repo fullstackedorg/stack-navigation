@@ -1,4 +1,9 @@
 {
     "name": "@fullstacked/stack-navigation",
-    "version": "0.0.0"
+    "version": "0.0.0",
+    "author": "cplepage",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fullstackedorg/stack-navigation"
+    }
 }
