@@ -1,4 +1,9 @@
+globalThis.back = function() {
+    return StackNavigation.singleton?.back()
+}
+
 export default class StackNavigation {
+    static singleton: StackNavigation;
     private views: HTMLElement[] = [];
 
     lock = false;
@@ -9,6 +14,8 @@ export default class StackNavigation {
     behindViewOffset = 0.3;
 
     constructor() {
+        StackNavigation.singleton = this;
+        
         window.addEventListener("touchstart", this.onStart.bind(this));
         window.addEventListener("touchmove", this.onMove.bind(this));
         window.addEventListener("touchend", this.onEnd.bind(this));
@@ -180,6 +187,8 @@ export default class StackNavigation {
         currentView.style.transition = "0.3s transform";
         currentView.style.pointerEvents = "all";
         currentView.style.transform = `translate3d(0%, 0px, 0px)`;
+
+        return this.views.length <= 1;
     }
 
     reset() {
