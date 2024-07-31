@@ -177,7 +177,12 @@ export default class StackNavigation {
         }, 1);
     }
 
+    // return if did go back
     back() {
+        if(this.views.length <= 1) {
+            return false;
+        }
+        
         const lastView = this.views.pop();
         lastView.style.transition = "0.3s transform";
         lastView.style.transform = `translate3d(${window.innerWidth}px, 0px, 0px)`;
@@ -188,8 +193,7 @@ export default class StackNavigation {
         currentView.style.pointerEvents = "all";
         currentView.style.transform = `translate3d(0%, 0px, 0px)`;
 
-        // return true for last view
-        return this.views.length <= 1;
+        return true;
     }
 
     reset() {
