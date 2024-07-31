@@ -188,6 +188,7 @@ export default class StackNavigation {
         currentView.style.pointerEvents = "all";
         currentView.style.transform = `translate3d(0%, 0px, 0px)`;
 
+        // return true for last view
         return this.views.length <= 1;
     }
 
