@@ -4,25 +4,25 @@ const stackNavigation = new StackNavigation();
 
 const randColor = () => {
     let color = "";
-    while(color?.length !== 6) {
-        color = Math.floor(Math.random() * 16777215).toString(16)
+    while (color?.length !== 6) {
+        color = Math.floor(Math.random() * 16777215).toString(16);
     }
     return "#" + color;
 };
 
-const view1 = document.createElement("div");
-view1.id = "grid";
+const main = document.createElement("main");
+main.id = "grid";
 const elementCount = 30;
 
 for (let i = 0; i < elementCount; i++) {
     const element = document.createElement("div");
     const color = randColor();
     element.style.backgroundColor = color;
-    view1.append(element);
+    main.append(element);
     element.addEventListener("click", () => navigateToColorView(color));
 }
 
-stackNavigation.navigate(view1);
+stackNavigation.navigate(main);
 
 function getColorByBgColor(bgColor) {
     if (!bgColor) {
@@ -33,16 +33,44 @@ function getColorByBgColor(bgColor) {
         : "#fff";
 }
 
-function navigateToColorView(color) {
+function navigateToColorView(bgColor) {
     const view = document.createElement("div");
     view.classList.add("color-view");
-    view.style.color = getColorByBgColor(color);
-    view.innerText = color;
+    view.style.color = getColorByBgColor(bgColor);
+    view.innerText = bgColor;
 
     const back = document.createElement("div");
     back.classList.add("back-btn");
     back.addEventListener("click", () => stackNavigation.back());
     view.append(back);
 
-    stackNavigation.navigate(view, color);
+    stackNavigation.navigate(view, {
+        bgColor,
+        onDestroy: () => {
+            Toast(`Removed view with bg ${bgColor}`);
+        }
+    });
+}
+
+const toastDuration = 2000;
+function Toast(text) {
+    const container = document.createElement("div");
+    container.classList.add("toast");
+
+    const inner = document.createElement("div");
+    inner.innerText = text;
+    container.append(inner);
+
+    const destroy = () => container.remove();
+    const hide = () => {
+        container.classList.remove("show");
+        setTimeout(destroy, 400);
+    };
+    const show = () => {
+        container.classList.add("show");
+        setTimeout(hide, toastDuration)
+    };
+    
+    setTimeout(show, 1)
+    document.body.append(container)
 }
