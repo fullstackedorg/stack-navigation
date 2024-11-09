@@ -61,7 +61,8 @@ export default class StackNavigation {
         currentView.element.style.transition = "none";
         currentView.element.style.transform = `translate3d(0px, 0px, 0px)`;
         currentView.element.classList.add("navigating");
-        (currentView.element.children[0] as HTMLElement).style.overflow = "hidden";
+        (currentView.element.children[0] as HTMLElement).style.overflow =
+            "hidden";
 
         this.views.at(-2).element.style.transition = "none";
     }
@@ -127,7 +128,8 @@ export default class StackNavigation {
             currentView.element.style.transition = "0.3s transform";
             currentView.element.style.transform = `translate3d(0px, 0px, 0px)`;
             currentView.element.classList.remove("navigating");
-            (currentView.element.children[0] as HTMLElement).style.overflow = "auto";
+            (currentView.element.children[0] as HTMLElement).style.overflow =
+                "auto";
 
             const behindView = this.views.at(-2);
             behindView.element.style.transition = "0.3s transform";
@@ -148,8 +150,14 @@ export default class StackNavigation {
             overflow: hidden;`;
 
         // DEPRECATING string options for bgColor (2024-10-09)
-        if (typeof options === "string" || options?.bgColor) {
-            view.style.backgroundColor = typeof options === "string" ? options : options?.bgColor;
+        if (typeof options === "string") {
+            options = {
+                bgColor: options
+            };
+        }
+
+        if (options?.bgColor) {
+            view.style.backgroundColor = options.bgColor;
         }
         view.style.transition = `0.3s transform`;
         view.style.transform = `translate3d(100%, 0px, 0px)`;
@@ -174,7 +182,7 @@ export default class StackNavigation {
 
         this.views.push({
             element: view,
-            ...options
+            ...(options || {})
         });
         document.body.append(view);
 
