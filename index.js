@@ -56,7 +56,10 @@ const toastDuration = 2000;
 function Toast(text) {
     const container = document.createElement("div");
     container.classList.add("toast");
-    container.innerText = text;
+
+    const inner = document.createElement("div");
+    inner.innerText = text;
+    container.append(inner);
 
     const destroy = () => container.remove();
     const hide = () => {

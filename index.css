@@ -20,6 +20,9 @@ html, body {
     }
 }
 
+* {
+    box-sizing: border-box;
+}
 
 #grid > div {
     aspect-ratio: 1/1
@@ -54,20 +57,26 @@ html, body {
 }
 
 .toast {
+    position: fixed;
+    z-index: 100;
+    bottom: 0;
+    width: 100%;
+    transform: translateY(110%);
+    transition: 0.3s transform;
+    padding: 0 10px;
+}
+
+.toast > div {
+    width: max-content;
+    margin: 0 auto;
     background-color: gray;
     color: white;
     border-radius: 30px;
     padding: 10px 15px;
     text-align: center;
-    position: fixed;
-    z-index: 100;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 110%);
-    transition: 0.3s transform;
     box-shadow: 0px 2px 20px rgba(10, 10, 10, 0.2)
 }
 
 .toast.show {
-    transform: translate(-50%, -5vh);
+    transform: translateY(-5vh);
 }
