@@ -26,6 +26,24 @@ export default class StackNavigation {
         document.body.style.margin = "0px";
         document.body.style.padding = "0px";
         document.body.style.overflow = "hidden";
+
+        this.adjustHeightToAvailableViewPort();
+    }
+
+    private adjustHeightToAvailableViewPort(){
+        let lastHeight = 0;
+        const checkHeight = () => {
+            const currentHeight = window.visualViewport.height;
+    
+            if (currentHeight !== lastHeight) {
+                this.views.forEach(v => v.element.style.height = currentHeight + "px")
+            }
+    
+            lastHeight = currentHeight;
+    
+            window.requestAnimationFrame(checkHeight);
+        };
+        checkHeight();
     }
 
     private drag: {
