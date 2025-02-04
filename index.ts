@@ -35,6 +35,11 @@ export default class StackNavigation {
         const checkHeight = () => {
             const currentHeight = window.visualViewport.height;
 
+            // soft keyboard is probably shown
+            if (currentHeight < document.body.clientHeight) {
+                document.activeElement.scrollIntoView();
+            }
+
             if (currentHeight !== lastHeight) {
                 this.views.forEach(
                     (v) => (v.element.style.height = currentHeight + "px"),
@@ -168,6 +173,11 @@ export default class StackNavigation {
             top: 0;
             left: 0;
             overflow: hidden;`;
+
+        view.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            return false;
+        });
 
         // DEPRECATING string options for bgColor (2024-10-09)
         if (typeof options === "string") {
