@@ -187,11 +187,18 @@ export default class StackNavigation {
         view.style.transition = `0.3s transform`;
         view.style.transform = `translate3d(100%, 0px, 0px)`;
 
+        // source: https://codepen.io/josephshambrook/pen/WvwyqX
         const scrollHack = document.createElement("div");
+        scrollHack.style.cssText = `
+            overflow: auto;
+            height: 100%;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+            position: relative;`;
 
         const inner = document.createElement("div");
         inner.style.cssText = `
-            height: 100%;
+            height: calc(100% + 2px);
             width: 100%;
             position: absolute;
             top: 0;
