@@ -60,11 +60,14 @@ export default class StackNavigation {
         };
     } = null;
     onStart(e: TouchEvent) {
-        if (this.views.length <= 1 || e.touches.length > 1 || this.lock) return;
+        e.preventDefault();
+
+        if (this.views.length <= 1 || e.touches.length > 1 || this.lock)
+            return false;
 
         const start = e.touches.item(0).clientX;
 
-        if (start > this.leftInit) return;
+        if (start > this.leftInit) return false;
 
         this.drag = {
             id: e.touches.item(0).identifier,
@@ -85,9 +88,13 @@ export default class StackNavigation {
             "hidden";
 
         this.views.at(-2).element.style.transition = "none";
+
+        return false;
     }
     onMove(e: TouchEvent) {
-        if (this.drag === null) return;
+        e.preventDefault();
+
+        if (this.drag === null) return false;
 
         let draggingTouch: Touch;
         for (let i = 0; i < e.touches.length; i++) {
@@ -100,7 +107,7 @@ export default class StackNavigation {
 
         if (!draggingTouch) {
             this.onEnd(e);
-            return;
+            return false;
         }
 
         this.drag.end = {
@@ -118,9 +125,13 @@ export default class StackNavigation {
             (this.behindViewOffset - deltaBehindViewPercent) * 100;
         this.views.at(-2).element.style.transform =
             `translate3d(-${translationX > 0 ? translationX : 0}%, 0px, 0px)`;
+
+        return false;
     }
     onEnd(e: TouchEvent) {
-        if (this.drag === null) return;
+        e.preventDefault();
+
+        if (this.drag === null) return false;
 
         let stillDragging = false;
         for (let i = 0; i < e.touches.length; i++) {
@@ -131,7 +142,7 @@ export default class StackNavigation {
             }
         }
 
-        if (stillDragging) return;
+        if (stillDragging) return false;
 
         const deltaTime = this.drag.end.timestamp - this.drag.start.timestamp;
         const deltaX = this.drag.end.x - this.drag.start.x;
@@ -157,6 +168,8 @@ export default class StackNavigation {
         }
 
         this.drag = null;
+
+        return false;
     }
 
     navigate(e: HTMLElement, options?: Partial<ViewOptions>) {
