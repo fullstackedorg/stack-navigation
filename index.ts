@@ -37,7 +37,7 @@ export default class StackNavigation {
 
             // soft keyboard is probably shown
             if (currentHeight < document.body.clientHeight) {
-                document.activeElement.scrollIntoView();
+                window.scrollTo(0, 0);
             }
 
             if (currentHeight !== lastHeight) {
@@ -174,11 +174,6 @@ export default class StackNavigation {
             left: 0;
             overflow: hidden;`;
 
-        view.addEventListener("touchmove", (e) => {
-            e.preventDefault();
-            return false;
-        });
-
         // DEPRECATING string options for bgColor (2024-10-09)
         if (typeof options === "string") {
             options = {
@@ -192,6 +187,8 @@ export default class StackNavigation {
         view.style.transition = `0.3s transform`;
         view.style.transform = `translate3d(100%, 0px, 0px)`;
 
+        const scrollHack = document.createElement("div");
+
         const inner = document.createElement("div");
         inner.style.cssText = `
             height: 100%;
@@ -202,7 +199,8 @@ export default class StackNavigation {
             overflow: auto;`;
 
         inner.append(e);
-        view.append(inner);
+        scrollHack.append(inner);
+        view.append(scrollHack);
 
         this.views.forEach((v) => {
             v.element.style.pointerEvents = "none";
