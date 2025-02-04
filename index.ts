@@ -6,6 +6,8 @@ export default class StackNavigation {
     static singleton: StackNavigation;
     private views: {
         element: HTMLElement;
+        scrollHack: HTMLElement;
+        inner: HTMLElement;
         onDestroy?: () => void;
     }[] = [];
 
@@ -38,6 +40,8 @@ export default class StackNavigation {
             // soft keyboard is probably shown
             if (currentHeight < document.body.clientHeight) {
                 window.scrollTo(0, 0);
+                this.views.at(-1).inner.style.height = "calc(100% + 2px)";
+                this.views.at(-1).scrollHack.scrollTo(0, 1);
             }
 
             if (currentHeight !== lastHeight) {
@@ -194,11 +198,12 @@ export default class StackNavigation {
             height: 100%;
             width: 100%;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior: none;
             position: relative;`;
 
         const inner = document.createElement("div");
         inner.style.cssText = `
-            height: calc(100% + 2px);
+            height: 100%;
             width: 100%;
             position: absolute;
             top: 0;
@@ -217,6 +222,8 @@ export default class StackNavigation {
 
         this.views.push({
             element: view,
+            scrollHack,
+            inner,
             ...(options || {}),
         });
         document.body.append(view);
