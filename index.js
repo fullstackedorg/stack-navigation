@@ -44,6 +44,9 @@ function navigateToColorView(bgColor) {
     back.addEventListener("click", () => stackNavigation.back());
     view.append(back);
 
+    const input = document.createElement("input");
+    view.append(input);
+
     stackNavigation.navigate(view, {
         bgColor,
         onDestroy: () => {

@@ -30,17 +30,19 @@ export default class StackNavigation {
         this.adjustHeightToAvailableViewPort();
     }
 
-    private adjustHeightToAvailableViewPort(){
+    private adjustHeightToAvailableViewPort() {
         let lastHeight = 0;
         const checkHeight = () => {
             const currentHeight = window.visualViewport.height;
-    
+
             if (currentHeight !== lastHeight) {
-                this.views.forEach(v => v.element.style.height = currentHeight + "px")
+                this.views.forEach(
+                    (v) => (v.element.style.height = currentHeight + "px"),
+                );
             }
-    
+
             lastHeight = currentHeight;
-    
+
             window.requestAnimationFrame(checkHeight);
         };
         checkHeight();
@@ -68,12 +70,12 @@ export default class StackNavigation {
             id: e.touches.item(0).identifier,
             start: {
                 x: start,
-                timestamp: Date.now()
+                timestamp: Date.now(),
             },
             end: {
                 x: start,
-                timestamp: Date.now()
-            }
+                timestamp: Date.now(),
+            },
         };
         const currentView = this.views.at(-1);
         currentView.element.style.transition = "none";
@@ -103,7 +105,7 @@ export default class StackNavigation {
 
         this.drag.end = {
             x: draggingTouch.clientX,
-            timestamp: Date.now()
+            timestamp: Date.now(),
         };
         let deltaX = this.drag.end.x - this.drag.start.x;
 
@@ -170,7 +172,7 @@ export default class StackNavigation {
         // DEPRECATING string options for bgColor (2024-10-09)
         if (typeof options === "string") {
             options = {
-                bgColor: options
+                bgColor: options,
             };
         }
 
@@ -200,7 +202,7 @@ export default class StackNavigation {
 
         this.views.push({
             element: view,
-            ...(options || {})
+            ...(options || {}),
         });
         document.body.append(view);
 
