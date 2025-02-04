@@ -42,6 +42,8 @@ export default class StackNavigation {
                 window.scrollTo(0, 0);
                 this.views.at(-1).inner.style.height = "calc(100% + 2px)";
                 this.views.at(-1).scrollHack.scrollTo(0, 1);
+            } else {
+                this.views.at(-1).inner.style.height = "100%";
             }
 
             if (currentHeight !== lastHeight) {
