@@ -6,6 +6,8 @@ export default class StackNavigation {
     static singleton: StackNavigation;
     private views: {
         element: HTMLElement;
+        scrollHack: HTMLElement;
+        inner: HTMLElement;
         onDestroy?: () => void;
     }[] = [];
 
@@ -26,6 +28,35 @@ export default class StackNavigation {
         document.body.style.margin = "0px";
         document.body.style.padding = "0px";
         document.body.style.overflow = "hidden";
+
+        this.adjustHeightToAvailableViewPort();
+    }
+
+    private adjustHeightToAvailableViewPort() {
+        let lastHeight = 0;
+        const checkHeight = () => {
+            const currentHeight = window.visualViewport.height;
+
+            // soft keyboard is probably shown
+            if (currentHeight < document.body.clientHeight) {
+                window.scrollTo(0, 0);
+                this.views.at(-1).inner.style.height = "calc(100% + 2px)";
+                this.views.at(-1).scrollHack.scrollTo(0, 1);
+            } else if(this.views?.at(-1)?.inner) {
+                this.views.at(-1).inner.style.height = "100%";
+            }
+
+            if (currentHeight !== lastHeight) {
+                this.views.forEach(
+                    (v) => (v.element.style.height = currentHeight + "px"),
+                );
+            }
+
+            lastHeight = currentHeight;
+
+            window.requestAnimationFrame(checkHeight);
+        };
+        checkHeight();
     }
 
     private drag: {
@@ -50,12 +81,12 @@ export default class StackNavigation {
             id: e.touches.item(0).identifier,
             start: {
                 x: start,
-                timestamp: Date.now()
+                timestamp: Date.now(),
             },
             end: {
                 x: start,
-                timestamp: Date.now()
-            }
+                timestamp: Date.now(),
+            },
         };
         const currentView = this.views.at(-1);
         currentView.element.style.transition = "none";
@@ -85,7 +116,7 @@ export default class StackNavigation {
 
         this.drag.end = {
             x: draggingTouch.clientX,
-            timestamp: Date.now()
+            timestamp: Date.now(),
         };
         let deltaX = this.drag.end.x - this.drag.start.x;
 
@@ -152,7 +183,7 @@ export default class StackNavigation {
         // DEPRECATING string options for bgColor (2024-10-09)
         if (typeof options === "string") {
             options = {
-                bgColor: options
+                bgColor: options,
             };
         }
 
@@ -161,6 +192,16 @@ export default class StackNavigation {
         }
         view.style.transition = `0.3s transform`;
         view.style.transform = `translate3d(100%, 0px, 0px)`;
+
+        // source: https://codepen.io/josephshambrook/pen/WvwyqX
+        const scrollHack = document.createElement("div");
+        scrollHack.style.cssText = `
+            overflow: auto;
+            height: 100%;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: none;
+            position: relative;`;
 
         const inner = document.createElement("div");
         inner.style.cssText = `
@@ -172,7 +213,8 @@ export default class StackNavigation {
             overflow: auto;`;
 
         inner.append(e);
-        view.append(inner);
+        scrollHack.append(inner);
+        view.append(scrollHack);
 
         this.views.forEach((v) => {
             v.element.style.pointerEvents = "none";
@@ -182,7 +224,9 @@ export default class StackNavigation {
 
         this.views.push({
             element: view,
-            ...(options || {})
+            scrollHack,
+            inner,
+            ...(options || {}),
         });
         document.body.append(view);
 

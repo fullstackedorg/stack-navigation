@@ -14,6 +14,10 @@ const main = document.createElement("main");
 main.id = "grid";
 const elementCount = 30;
 
+const inputContainer = document.createElement("div");
+inputContainer.innerHTML = `<input />`
+main.append(inputContainer);
+
 for (let i = 0; i < elementCount; i++) {
     const element = document.createElement("div");
     const color = randColor();
@@ -44,11 +48,14 @@ function navigateToColorView(bgColor) {
     back.addEventListener("click", () => stackNavigation.back());
     view.append(back);
 
+    const input = document.createElement("input");
+    view.append(input);
+
     stackNavigation.navigate(view, {
         bgColor,
         onDestroy: () => {
             Toast(`Removed view with bg ${bgColor}`);
-        }
+        },
     });
 }
 
@@ -68,9 +75,9 @@ function Toast(text) {
     };
     const show = () => {
         container.classList.add("show");
-        setTimeout(hide, toastDuration)
+        setTimeout(hide, toastDuration);
     };
-    
-    setTimeout(show, 1)
-    document.body.append(container)
+
+    setTimeout(show, 1);
+    document.body.append(container);
 }
