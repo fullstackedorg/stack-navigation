@@ -1,4 +1,5 @@
 {
     "name": "@fullstacked/stack-navigation",
-    "version": "0.0.4"
+    "version": "0.0.4",
+    "main": "./stack-navigation.ts"
 }
