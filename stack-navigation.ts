@@ -40,15 +40,13 @@ export default class StackNavigation {
                 let currentHeight = window.visualViewport.height;
 
                 // soft keyboard is probably shown
-                if (currentHeight < document.body.clientHeight) {
+                if (document.body.clientHeight - currentHeight > 100) {
                     window.scrollTo(0, 0);
                     currentView.inner.style.height = "calc(100% + 2px)";
                     currentView.scrollHack.scrollTo(0, 1);
                 } else if (this.views?.at(-1)?.inner) {
                     currentView.inner.style.height = "100%";
-                } else {
-                    currentHeight =
-                        document.body.getBoundingClientRect().height;
+                    currentHeight = document.body.clientHeight;
                 }
 
                 if (currentHeight !== lastHeight) {
