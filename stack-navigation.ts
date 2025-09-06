@@ -46,7 +46,9 @@ export default class StackNavigation {
                     currentView.scrollHack.scrollTo(0, 1);
                 } else if (this.views?.at(-1)?.inner) {
                     currentView.inner.style.height = "100%";
-                    currentHeight = document.body.getBoundingClientRect().height;
+                } else {
+                    currentHeight =
+                        document.body.getBoundingClientRect().height;
                 }
 
                 if (currentHeight !== lastHeight) {

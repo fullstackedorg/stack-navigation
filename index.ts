@@ -15,7 +15,7 @@ main.id = "grid";
 const elementCount = 30;
 
 const inputContainer = document.createElement("div");
-inputContainer.innerHTML = `<input />`
+inputContainer.innerHTML = `<input />`;
 main.append(inputContainer);
 
 for (let i = 0; i < elementCount; i++) {
