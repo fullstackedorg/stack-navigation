@@ -18,6 +18,8 @@ export default class StackNavigation {
 
     behindViewOffset = 0.3;
 
+    ruler = document.createElement("div");
+
     constructor() {
         StackNavigation.singleton = this;
 
@@ -30,6 +32,17 @@ export default class StackNavigation {
         document.body.style.overflow = "hidden";
 
         this.adjustHeightToAvailableViewPort();
+
+        this.ruler.style.cssText = `
+            position: fixed;
+            z-index: -1;
+            backgroundColor: transparent;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 1px;
+            pointer-event: none;
+        `;
     }
 
     private adjustHeightToAvailableViewPort() {
@@ -37,7 +50,7 @@ export default class StackNavigation {
         const checkHeight = () => {
             const currentView = this.views.at(-1);
             if (currentView) {
-                const currentHeight = window.visualViewport.height;
+                let currentHeight = window.visualViewport.height;
 
                 // soft keyboard is probably shown
                 if (currentHeight < document.body.clientHeight) {
@@ -46,6 +59,7 @@ export default class StackNavigation {
                     currentView.scrollHack.scrollTo(0, 1);
                 } else if (this.views?.at(-1)?.inner) {
                     currentView.inner.style.height = "100%";
+                    currentHeight = document.body.getBoundingClientRect().height;
                 }
 
                 if (currentHeight !== lastHeight) {
