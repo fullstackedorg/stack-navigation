@@ -18,8 +18,6 @@ export default class StackNavigation {
 
     behindViewOffset = 0.3;
 
-    ruler = document.createElement("div");
-
     constructor() {
         StackNavigation.singleton = this;
 
@@ -32,17 +30,6 @@ export default class StackNavigation {
         document.body.style.overflow = "hidden";
 
         this.adjustHeightToAvailableViewPort();
-
-        this.ruler.style.cssText = `
-            position: fixed;
-            z-index: -1;
-            backgroundColor: transparent;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 1px;
-            pointer-event: none;
-        `;
     }
 
     private adjustHeightToAvailableViewPort() {
